@@ -28,6 +28,18 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style TargetType="{x:Type Thumb}" x:Key="LeftSideDragHandleThumbStyle" x:Name="LeftSideDragHandleThumbStyle">
+                <Setter Property="dragablz:DragablzItem.IsCustomThumb" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Button IsEnabled="False" HorizontalAlignment="Left" Margin="-5,5" VerticalAlignment="Top" BorderThickness="0" Padding="0" Foreground="SlateBlue" Background="Transparent">
+                                <materialDesign:PackIcon Kind="DragVertical" VerticalAlignment="Center" HorizontalAlignment="Center" Width="38" Height="38" />
+                            </Button>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -39,20 +51,13 @@
                 <dragablz:VerticalOrganiser/>
             </dragablz:DragablzItemsControl.ItemsOrganiser>
             <dragablz:DragablzItem Margin="30,10">
-                <Grid Margin="-50,0,0,0">
-                    <materialDesign:Card Height="50" Width="515">
+                <Grid Margin="-50,0">
+                    <materialDesign:Card Height="50">
                         <Grid>
-                            
                         </Grid>
                     </materialDesign:Card>
-                    <Thumb dragablz:DragablzItem.IsCustomThumb="True">
-                        <Thumb.Template>
-                            <ControlTemplate>
-                                <Grid Background="Transparent"/>
-                            </ControlTemplate>
-                        </Thumb.Template>
-                    </Thumb>
-            </Grid>
+                    <Thumb Style="{StaticResource LeftSideDragHandleThumbStyle}"/>
+                </Grid>
             </dragablz:DragablzItem>
         </dragablz:DragablzItemsControl>
     </Grid>
