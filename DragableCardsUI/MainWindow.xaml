@@ -18,6 +18,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <SineEase x:Key="Ease" EasingMode="EaseInOut"/>
             <Style TargetType="{x:Type Thumb}" x:Key="InvisibleThumbStyle">
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="Template">
@@ -28,35 +29,77 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <Style TargetType="{x:Type Thumb}" x:Key="LeftSideDragHandleThumbStyle" x:Name="LeftSideDragHandleThumbStyle">
+            <Style TargetType="{x:Type Thumb}" x:Key="LeftSideDragHandleThumbStyle">
                 <Setter Property="dragablz:DragablzItem.IsCustomThumb" Value="True"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate>
-                            <Button IsEnabled="False" HorizontalAlignment="Left" Margin="-5,5" VerticalAlignment="Top" BorderThickness="0" Padding="0" Foreground="SlateBlue" Background="Transparent">
+                            <Button Name="DragButton" IsEnabled="False" HorizontalAlignment="Left" Margin="-5,5" VerticalAlignment="Top" BorderThickness="0" Padding="0" Foreground="DarkBlue" Background="Transparent">
                                 <materialDesign:PackIcon Kind="DragVertical" VerticalAlignment="Center" HorizontalAlignment="Center" Width="38" Height="38" />
                             </Button>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Storyboard x:Key="CardDragStartAnimation">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleX">
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1.12" EasingFunction="{StaticResource Ease}" />
+                </DoubleAnimationUsingKeyFrames>
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleY">
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1.12" EasingFunction="{StaticResource Ease}" />
+                </DoubleAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Card" Storyboard.TargetProperty="(materialDesign:ShadowAssist.ShadowDepth)">
+                    <DiscreteObjectKeyFrame KeyTime="0:0:0.08" Value="{x:Static materialDesign:ShadowDepth.Depth2}" />
+                    <DiscreteObjectKeyFrame KeyTime="0:0:0.12" Value="{x:Static materialDesign:ShadowDepth.Depth3}" />
+                    <DiscreteObjectKeyFrame KeyTime="0:0:0.16" Value="{x:Static materialDesign:ShadowDepth.Depth4}" />
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="CardDragStopAnimation">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleX">
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1" EasingFunction="{StaticResource Ease}" />
+                </DoubleAnimationUsingKeyFrames>
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleY">
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1" EasingFunction="{StaticResource Ease}" />
+                </DoubleAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Card" Storyboard.TargetProperty="(materialDesign:ShadowAssist.ShadowDepth)">
+                    <DiscreteObjectKeyFrame KeyTime="0:0:0.12" Value="{x:Static materialDesign:ShadowDepth.Depth4}" />
+                    <DiscreteObjectKeyFrame KeyTime="0:0:0.16" Value="{x:Static materialDesign:ShadowDepth.Depth3}" />
+                    <DiscreteObjectKeyFrame KeyTime="0:0:0.22" Value="{x:Static materialDesign:ShadowDepth.Depth2}" />
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <dragablz:DragablzItemsControl>
+        <dragablz:DragablzItemsControl VerticalAlignment="Top" Margin="0">
             <dragablz:DragablzItemsControl.PositionMonitor>
                 <dragablz:VerticalPositionMonitor/>
             </dragablz:DragablzItemsControl.PositionMonitor>
             <dragablz:DragablzItemsControl.ItemsOrganiser>
                 <dragablz:VerticalOrganiser/>
             </dragablz:DragablzItemsControl.ItemsOrganiser>
-            <dragablz:DragablzItem Margin="30,10">
+            <dragablz:DragablzItem Margin="30,10" Name="DragablzItem">
                 <Grid Margin="-50,0">
-                    <materialDesign:Card Height="50">
+                    <materialDesign:Card Height="50" VerticalAlignment="Top" Margin="0" x:Name="Card">
+                        <Grid>
+                        </Grid>
+                    </materialDesign:Card>
+                    <Thumb Style="{StaticResource LeftSideDragHandleThumbStyle}" Name="DragHandle"/>
+                    <Grid.RenderTransform>
+                        <ScaleTransform x:Name="ScaleTransform" ScaleX="1" ScaleY="1" />
+                    </Grid.RenderTransform>
+                </Grid>
+            </dragablz:DragablzItem>
+
+            <dragablz:DragablzItem Margin="30,10" Name="DragablzItem1">
+                <Grid Margin="-50,0">
+                    <materialDesign:Card Height="50" VerticalAlignment="Top" Margin="0" x:Name="Card1">
                         <Grid>
                         </Grid>
                     </materialDesign:Card>
                     <Thumb Style="{StaticResource LeftSideDragHandleThumbStyle}"/>
+                    <Grid.RenderTransform>
+                        <ScaleTransform x:Name="ScaleTransform1" ScaleX="1" ScaleY="1" />
+                    </Grid.RenderTransform>
                 </Grid>
             </dragablz:DragablzItem>
         </dragablz:DragablzItemsControl>
